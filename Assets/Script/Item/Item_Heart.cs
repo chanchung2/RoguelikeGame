@@ -51,7 +51,6 @@ public class Item_Heart : MonoBehaviour
             else if (item.itemName == "Half_Heart")
             {
                 playerController.IncreaseHP(1);
-                Debug.Log("ang");
                 Destroy(gameObject);
             }
             else

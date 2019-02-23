@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         Vector3 movePos = new Vector3(h, v, 0f);
         var move = transform.position + movePos * moveSpeed * Time.smoothDeltaTime;
         move.x = Mathf.Clamp(move.x, -theMapController.sizeX, theMapController.sizeX);
-        move.y = Mathf.Clamp(move.y, -theMapController.sizeY, theMapController.sizeY);
+        move.y = Mathf.Clamp(move.y, -theMapController.sizeY, theMapController.sizeY + 1.3f);
 
         rigidbody.MovePosition(move);
     }
@@ -80,11 +80,11 @@ public class PlayerController : MonoBehaviour
             }
             else if (Input.GetKey(KeyCode.UpArrow))
             {
-                StartCoroutine(AttackCoroutine(upPos, Quaternion.Euler(0, 0, 90)));
+                StartCoroutine(AttackCoroutine(upPos, Quaternion.Euler(0, 0, 270)));
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                StartCoroutine(AttackCoroutine(downPos, Quaternion.Euler(0, 0, 270)));
+                StartCoroutine(AttackCoroutine(downPos, Quaternion.Euler(0, 0, 90)));
             }
         }
     }

@@ -63,7 +63,6 @@ public class PlayerHeart : MonoBehaviour
 
         for (int i = countHeart; i < maxHP / 2; i++)
         {
-            Debug.Log(countHeart + " asd" + maxHP / 2);
             transform.GetChild(i).gameObject.SetActive(true);
             transform.GetChild(i).gameObject.GetComponent<Image>().sprite = empty_Heart;
         }
