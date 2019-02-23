@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
 {
     private bool isAttack = false;
 
+    public int maxHp;
+    public int currentHp;
+
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
@@ -35,11 +38,13 @@ public class PlayerController : MonoBehaviour
     private Item player_Weapon;
 
     private MapController theMapController;
+    private PlayerHeart playerHeart;
 
     void Start()
     {
         lastPos = transform.position;
         theMapController = FindObjectOfType<MapController>();
+        playerHeart = FindObjectOfType<PlayerHeart>();
     }
 
     void Update()
@@ -82,6 +87,17 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(AttackCoroutine(downPos, Quaternion.Euler(0, 0, 270)));
             }
         }
+    }
+
+    public void IncreaseHP(int _hp)
+    {
+        currentHp += _hp;
+
+        if (currentHp > maxHp)
+        {
+            currentHp = maxHp;
+        }
+        playerHeart.HeartReset();
     }
 
     IEnumerator AttackCoroutine(Transform pos, Quaternion qua)

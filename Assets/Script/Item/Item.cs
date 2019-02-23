@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="New item", menuName ="new Item/item")]
 public class Item : ScriptableObject
 {
-    public enum ItemType { Weapon, Other };
+    public enum ItemType { Weapon, Heart, Other };
 
     public string itemName;
     public Sprite itemImage;
