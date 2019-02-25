@@ -7,8 +7,7 @@ public class Room : MonoBehaviour
     public enum RoomType { NULL, B, T, TB, R, RB, TR, TRB, L, LB, TL, TLB, LR, LBR, LTR, LTRB };
     public enum Direction { Left, Up, Right, Down };
 
-
-public RoomType roomType = RoomType.NULL;
+    public RoomType roomType = RoomType.NULL;
 
     public bool LeftType = false;
     public bool UpType = false;
@@ -18,6 +17,8 @@ public RoomType roomType = RoomType.NULL;
     public int targetX;
     public int targetY;
     public int order = 0;
+
+    public GameObject map;
 
     public Room(int x, int y, int order)
     {

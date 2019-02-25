@@ -8,18 +8,27 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private int roomYsize;
     [SerializeField] private int roomNumber;
 
+    [SerializeField] public float mapDistanceX;
+    [SerializeField] public float mapDistanceY;
+
     [SerializeField] private GameObject[] room;
-    [SerializeField] private Transform parent;
+    [SerializeField] private GameObject map;
+    [SerializeField] public Transform parent;
+    [SerializeField] private Transform mapParent; // 필드맵 부모
 
-    [SerializeField] private GameObject PlayerPos;
+    public GameObject miniMapPlayerPos;
 
-    [SerializeField] private MinimapCamera minimapCamera;
+    public MinimapCamera minimapCamera;
 
-    private Room[,] rooms;
+    private PlayerController playerController;
+
+    public Room[,] rooms;    // 방에 대한 정보.
+    public GameObject[,] miniMap; // 미니맵
 
     // Start is called before the first frame update
     void Start()
     {
+        playerController = FindObjectOfType<PlayerController>();
         RoomSetting();
         RoomTypeSetting();
         RoomCreate();
@@ -34,6 +43,7 @@ public class RoomManager : MonoBehaviour
     private void RoomSetting()
     {
         rooms = new Room[roomXsize, roomYsize];
+        miniMap = new GameObject[roomXsize, roomYsize];
 
         int count = 0;
         int direction = 0;
@@ -93,10 +103,13 @@ public class RoomManager : MonoBehaviour
                 }
             }
         }
-        /*for (x = 0; x < roomXsize; x++)
+
+        for (x = 0; x < 5; x++)
         {
             Debug.Log(rooms[x, 0].order + "(" + rooms[x, 0].targetX + "," + rooms[x, 0].targetY + ")      " + rooms[x, 1].order + "(" + rooms[x, 1].targetX + "," + rooms[x, 1].targetY + ")      " + rooms[x, 2].order + "(" + rooms[x, 2].targetX + "," + rooms[x, 2].targetY + ")      " + rooms[x, 3].order + "(" + rooms[x, 3].targetX + "," + rooms[x, 3].targetY + ")      " + rooms[x, 4].order + "(" + rooms[x, 4].targetX + "," + rooms[x, 4].targetY + ")");
-        }*/
+        }
+            
+        
     }
 
     private void RoomTypeSetting()
@@ -204,11 +217,10 @@ public class RoomManager : MonoBehaviour
                                 }
                             }
                         }
-                        //Debug.Log(" Left : " + rooms[x, y].LeftType + "      Right : " + rooms[x, y].RightType + "          Up : " + rooms[x, y].UpType + "           Down : " + rooms[x, y].DownType);
+                        Debug.Log(" Left : " + rooms[x, y].LeftType + "      Right : " + rooms[x, y].RightType + "          Up : " + rooms[x, y].UpType + "           Down : " + rooms[x, y].DownType);
                         designate = RoomDesignate(rooms[x, y].LeftType, rooms[x, y].RightType, rooms[x, y].UpType, rooms[x, y].DownType);
-                        //Debug.Log((Room.RoomType)designate);
+                        Debug.Log("order : "+ rooms[x,y].order + " designate : " +(Room.RoomType)designate);
                         rooms[x, y].roomType = (Room.RoomType)designate;
-
                         x = 0;
                         y = 0;
                         count++;
@@ -229,8 +241,6 @@ public class RoomManager : MonoBehaviour
         int down = _down ? 1 : 0;
 
         value = left + right + up + down;
-
-        Debug.Log("value : " + value);
 
         return value;
     }
@@ -254,18 +264,26 @@ public class RoomManager : MonoBehaviour
                     roomType = (int)rooms[x, y].roomType - 1;
                     //Debug.Log("num : " + rooms[x,y].order + "       " + rooms[x, y].roomType);
 
-                    GameObject map = Instantiate(room[roomType], new Vector3(positionX, positionY, 0.0f), Quaternion.identity);
-                    if (count == 1)
+                    miniMap[x,y] = Instantiate(room[roomType], new Vector3(positionX, positionY, 0.0f), Quaternion.identity);
+                    MapCreate(x,y);
+                    if (rooms[x,y].order == 1) // 첫 맵 초기화.
                     {
-                        var clone = Instantiate(PlayerPos, map.transform.position, Quaternion.identity);
-                        clone.transform.parent = parent;
-
-                        minimapCamera.CameraMove(clone.transform);
+                        playerController.PlayerMapMove(x, y);
                     }
-                    map.transform.parent = parent;
+                    miniMap[x,y].transform.parent = parent;
                     count++;
                 }
             }
         }
+    }
+
+    private void MapCreate(int _x, int _y)
+    {
+        rooms[_x,_y].map = Instantiate(map, new Vector3(_y * mapDistanceX, -_x * mapDistanceY, 0f), Quaternion.identity);
+        rooms[_x, _y].map.GetComponent<Map>().posX = _x;
+        rooms[_x, _y].map.GetComponent<Map>().posY = _y;
+        rooms[_x, _y].map.GetComponent<Map>().roomType = rooms[_x, _y].roomType;
+        rooms[_x, _y].map.transform.parent = mapParent;
+        //[_x, _y].map.gameObject.SetActive(false);
     }
 }
