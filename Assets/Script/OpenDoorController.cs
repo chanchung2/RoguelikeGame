@@ -29,14 +29,15 @@ public class OpenDoorController : MonoBehaviour
             {
                 if (transform.parent.name == transform.parent.parent.GetComponent<Map>().door[i].name)
                 {
-                    if (i == 0)
-                        playerController.PlayerMapMove(moveX, moveY -1, 1);
+                    playerController.roomManager.rooms[moveX, moveY].map.SetActive(false);
+                    if (i == 0) // switch 문으로 바꾸기
+                        playerController.PlayerMapMove(moveX, moveY - 1, 1);
                     else if (i == 1)
-                        playerController.PlayerMapMove(moveX, moveY +1, 0);
+                        playerController.PlayerMapMove(moveX, moveY + 1, 0);
                     else if (i == 2)
-                        playerController.PlayerMapMove(moveX-1, moveY,3);
+                        playerController.PlayerMapMove(moveX - 1, moveY, 3);
                     else
-                        playerController.PlayerMapMove(moveX+1, moveY,2);
+                        playerController.PlayerMapMove(moveX + 1, moveY, 2);
                 }
             }
         }

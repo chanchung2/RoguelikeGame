@@ -36,34 +36,33 @@ public class PlayerHeart : MonoBehaviour
 
     public void HeartReset()
     {
+        countHeart = 0;
+
         currentHP = playerController.currentHp;
         maxHP = playerController.maxHp;
 
         quotient = currentHP / 2;
         remainder = currentHP % 2;
 
-        for (int i = 0; i < quotient; i++)
+        for (int i = 0; i < maxHP / 2; i++)
         {
             transform.GetChild(i).gameObject.SetActive(true);
+        }
+
+        for (int i = 0; i < quotient; i++)
+        {
             transform.GetChild(i).gameObject.GetComponent<Image>().sprite = heart;
-            countHeart = i;
+            countHeart = i+1;
         }
 
         if (remainder == 1)
         {
-            countHeart += 1;
-            transform.GetChild(countHeart).gameObject.SetActive(true);
             transform.GetChild(countHeart).gameObject.GetComponent<Image>().sprite = half_Heart;
-            countHeart += 1;
-        }
-        else
-        {
             countHeart += 1;
         }
 
         for (int i = countHeart; i < maxHP / 2; i++)
         {
-            transform.GetChild(i).gameObject.SetActive(true);
             transform.GetChild(i).gameObject.GetComponent<Image>().sprite = empty_Heart;
         }
     }

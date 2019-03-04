@@ -42,8 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Item player_Weapon;
 
-    [SerializeField]
-    private RoomManager roomManager;
+    public RoomManager roomManager;
     private PlayerHeart playerHeart;
     [SerializeField]
     private Cinemachine.CinemachineConfiner confiner;
@@ -109,6 +108,18 @@ public class PlayerController : MonoBehaviour
         playerHeart.HeartReset();
     }
 
+    public void DecreaseHP(int _hp)
+    {
+        currentHp -= _hp;
+
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            Debug.Log("플레이어 사망");
+        }
+        playerHeart.HeartReset();
+    }
+
     IEnumerator AttackCoroutine(Transform pos, Quaternion qua)
     {
         isAttack = true;
@@ -126,6 +137,8 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(miniMap);
         }
+        roomManager.rooms[_x, _y].map.SetActive(true);
+
         float posX = roomManager.rooms[_x, _y].map.GetComponent<Map>().posY;
         float posY = roomManager.rooms[_x, _y].map.GetComponent<Map>().posX;
         float mapDistanceX = roomManager.mapDistanceX;
@@ -142,19 +155,21 @@ public class PlayerController : MonoBehaviour
 
         confiner.m_BoundingShape2D = roomManager.rooms[_x, _y].map.GetComponent<Map>().collider;
 
-        miniMap = Instantiate(roomManager.miniMapPlayerPos, roomManager.miniMap[_x,_y].transform.position, Quaternion.identity);
+        miniMap = Instantiate(roomManager.minimapPlayerPos, roomManager.miniMap[_x,_y].transform.position, Quaternion.identity);
         miniMap.transform.parent = roomManager.parent;
         roomManager.minimapCamera.CameraMove(miniMap.transform);
-        Debug.Log("x : " + _x + " y : " + _y);
+        //Debug.Log("x : " + _x + " y : " + _y);
     }
 
     public void PlayerMapMove(int _x, int _y, int _doorPos)
     {
-        Debug.Log("x : " + _x + " y : " + _y);
+        //Debug.Log("x : " + _x + " y : " + _y);
         if (miniMap != null)
         {
             Destroy(miniMap);
         }
+        roomManager.rooms[_x, _y].map.SetActive(true);
+
         float posX = roomManager.rooms[_x, _y].map.GetComponent<Map>().posY;
         float posY = roomManager.rooms[_x, _y].map.GetComponent<Map>().posX;
         float mapDistanceX = roomManager.mapDistanceX;
@@ -169,7 +184,7 @@ public class PlayerController : MonoBehaviour
 
         confiner.m_BoundingShape2D = roomManager.rooms[_x, _y].map.GetComponent<Map>().collider;
 
-        miniMap = Instantiate(roomManager.miniMapPlayerPos, roomManager.miniMap[_x, _y].transform.position, Quaternion.identity);     // 미니맵 이동 스크립트 새로만들기/..
+        miniMap = Instantiate(roomManager.minimapPlayerPos, roomManager.miniMap[_x, _y].transform.position, Quaternion.identity);     // 미니맵 이동 스크립트 새로만들기/..
         miniMap.transform.parent = roomManager.parent;
         roomManager.minimapCamera.CameraMove(miniMap.transform);
     }

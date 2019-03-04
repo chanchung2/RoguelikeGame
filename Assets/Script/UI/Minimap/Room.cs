@@ -14,6 +14,9 @@ public class Room : MonoBehaviour
     public bool RightType = false;
     public bool DownType = false;
 
+    public bool specialRoom = false;
+    public bool bossRoom = false;
+
     public int targetX;
     public int targetY;
     public int order = 0;

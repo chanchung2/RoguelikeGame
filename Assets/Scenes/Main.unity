@@ -165,9 +165,13 @@ MonoBehaviour:
   map: {fileID: 8558085399494871801, guid: d0d0c76688837f1459eb3c1fbb972026, type: 3}
   parent: {fileID: 709352419}
   mapParent: {fileID: 1795156348}
-  miniMapPlayerPos: {fileID: 2604561659818941074, guid: ed29c5761d72e4248ade4426a91b6db0,
+  minimapPlayerPos: {fileID: 2604561659818941074, guid: ed29c5761d72e4248ade4426a91b6db0,
     type: 3}
   minimapCamera: {fileID: 1149628167}
+  specialmapPos: {fileID: 1262257774611705143, guid: eb05a32805aab04428696eb13e5084ec,
+    type: 3}
+  bossmapPos: {fileID: 5091539712544174105, guid: ea8167450165c624687738ac5000396e,
+    type: 3}
 --- !u!4 &161131243
 Transform:
   m_ObjectHideFlags: 0
@@ -461,7 +465,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309154333}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.5, y: 14, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1799628187}
@@ -484,7 +488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 10
   currentHp: 5
-  moveSpeed: 18
+  moveSpeed: 30
   attackSpeed: 0.5
   rigidbody: {fileID: 309154336}
   leftPos: {fileID: 2076983428}
@@ -757,7 +761,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 7.23
+  orthographic size: 10
   m_Depth: 10
   m_CullingMask:
     serializedVersion: 2
@@ -781,7 +785,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.5, y: 14, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 392231963}
@@ -879,7 +883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &574147306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -894,10 +898,10 @@ RectTransform:
   m_Father: {fileID: 1988090151}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 250, y: -250}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &574147307
 MonoBehaviour:

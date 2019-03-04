@@ -16,14 +16,19 @@ public class RoomManager : MonoBehaviour
     [SerializeField] public Transform parent;
     [SerializeField] private Transform mapParent; // 필드맵 부모
 
-    public GameObject miniMapPlayerPos;
+    public GameObject minimapPlayerPos;
 
     public MinimapCamera minimapCamera;
+
+    public GameObject specialmapPos;
+    public GameObject bossmapPos;
 
     private PlayerController playerController;
 
     public Room[,] rooms;    // 방에 대한 정보.
     public GameObject[,] miniMap; // 미니맵
+
+    public List<List<int>> roomList = new List<List<int>>();
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +36,7 @@ public class RoomManager : MonoBehaviour
         playerController = FindObjectOfType<PlayerController>();
         RoomSetting();
         RoomTypeSetting();
+        SpecialMapSetting();
         RoomCreate();
     }
 
@@ -50,6 +56,8 @@ public class RoomManager : MonoBehaviour
 
         int x = 0;
         int y = 0;
+        int tempX = 0;
+        int tempY = 0;
 
         for (x = 0; x < roomXsize; x++)
         {
@@ -78,6 +86,8 @@ public class RoomManager : MonoBehaviour
                     if (rooms[x, y - 1].order == 0)
                     {
                         rooms[x, y - 1] = new Room(x, y, ++count);
+                        tempX = x;
+                        tempY = y - 1;
                     }
                 }
                 else if ((Room.Direction)direction == Room.Direction.Up && x - 1 >= 0)
@@ -85,6 +95,8 @@ public class RoomManager : MonoBehaviour
                     if (rooms[x - 1, y].order == 0)
                     {
                         rooms[x - 1, y] = new Room(x, y, ++count);
+                        tempX = x - 1;
+                        tempY = y;
                     }
                 }
                 else if ((Room.Direction)direction == Room.Direction.Right && y + 1 <= roomYsize - 1)
@@ -92,6 +104,8 @@ public class RoomManager : MonoBehaviour
                     if (rooms[x, y + 1].order == 0)
                     {
                         rooms[x, y + 1] = new Room(x, y, ++count);
+                        tempX = x;
+                        tempY = y + 1;
                     }
                 }
                 else if ((Room.Direction)direction == Room.Direction.Down && x + 1 <= roomXsize - 1)
@@ -99,15 +113,22 @@ public class RoomManager : MonoBehaviour
                     if (rooms[x + 1, y].order == 0)
                     {
                         rooms[x + 1, y] = new Room(x, y, ++count);
+                        tempX = x + 1;
+                        tempY = y;
                     }
+                }
+
+                if (roomNumber == count) // 보스방 설정
+                {
+                    rooms[tempX, tempY].bossRoom = true;
                 }
             }
         }
 
-        for (x = 0; x < 5; x++)
+      /*  for (x = 0; x < 5; x++)
         {
             Debug.Log(rooms[x, 0].order + "(" + rooms[x, 0].targetX + "," + rooms[x, 0].targetY + ")      " + rooms[x, 1].order + "(" + rooms[x, 1].targetX + "," + rooms[x, 1].targetY + ")      " + rooms[x, 2].order + "(" + rooms[x, 2].targetX + "," + rooms[x, 2].targetY + ")      " + rooms[x, 3].order + "(" + rooms[x, 3].targetX + "," + rooms[x, 3].targetY + ")      " + rooms[x, 4].order + "(" + rooms[x, 4].targetX + "," + rooms[x, 4].targetY + ")");
-        }
+        }*/
             
         
     }
@@ -217,9 +238,9 @@ public class RoomManager : MonoBehaviour
                                 }
                             }
                         }
-                        Debug.Log(" Left : " + rooms[x, y].LeftType + "      Right : " + rooms[x, y].RightType + "          Up : " + rooms[x, y].UpType + "           Down : " + rooms[x, y].DownType);
+                        //Debug.Log(" Left : " + rooms[x, y].LeftType + "      Right : " + rooms[x, y].RightType + "          Up : " + rooms[x, y].UpType + "           Down : " + rooms[x, y].DownType);
                         designate = RoomDesignate(rooms[x, y].LeftType, rooms[x, y].RightType, rooms[x, y].UpType, rooms[x, y].DownType);
-                        Debug.Log("order : "+ rooms[x,y].order + " designate : " +(Room.RoomType)designate);
+                        //Debug.Log("order : "+ rooms[x,y].order + " designate : " +(Room.RoomType)designate);
                         rooms[x, y].roomType = (Room.RoomType)designate;
                         x = 0;
                         y = 0;
@@ -245,6 +266,24 @@ public class RoomManager : MonoBehaviour
         return value;
     }
 
+    private void SpecialMapSetting()
+    {
+        int x = 0;
+        int y = 0;
+
+        do
+        {
+            x = Random.Range(0, roomXsize);
+            y = Random.Range(0, roomYsize);
+
+            if (rooms[x, y].roomType != Room.RoomType.NULL && rooms[x, y].bossRoom == false && rooms[x, y].order != 1)
+            {
+                rooms[x, y].specialRoom = true;
+            }
+        }
+        while (rooms[x, y].specialRoom != true);
+    }
+
     private void RoomCreate()
     {
         int roomType;
@@ -265,6 +304,16 @@ public class RoomManager : MonoBehaviour
                     //Debug.Log("num : " + rooms[x,y].order + "       " + rooms[x, y].roomType);
 
                     miniMap[x,y] = Instantiate(room[roomType], new Vector3(positionX, positionY, 0.0f), Quaternion.identity);
+                    if (rooms[x, y].bossRoom == true)
+                    {
+                        var clone = Instantiate(bossmapPos, new Vector3(positionX, positionY, 0.0f), Quaternion.identity);
+                        clone.transform.parent = parent;
+                    }
+                    if (rooms[x, y].specialRoom == true)
+                    {
+                        var clone = Instantiate(specialmapPos, new Vector3(positionX, positionY, 0.0f), Quaternion.identity);
+                        clone.transform.parent = parent;
+                    }
                     MapCreate(x,y);
                     if (rooms[x,y].order == 1) // 첫 맵 초기화.
                     {
@@ -284,6 +333,7 @@ public class RoomManager : MonoBehaviour
         rooms[_x, _y].map.GetComponent<Map>().posY = _y;
         rooms[_x, _y].map.GetComponent<Map>().roomType = rooms[_x, _y].roomType;
         rooms[_x, _y].map.transform.parent = mapParent;
+        rooms[_x, _y].map.SetActive(false);
         //[_x, _y].map.gameObject.SetActive(false);
     }
 }
