@@ -27,6 +27,8 @@ public class Map : MonoBehaviour
 
     [SerializeField]
     private GameObject enemy;
+    [SerializeField]
+    private GameObject enemyBoss;
 
     void Awake()
     {
@@ -45,15 +47,22 @@ public class Map : MonoBehaviour
     {
         DoorReset();
 
-        if(room.rooms[posX, posY].order != 1)
+        if (room.rooms[posX, posY].bossRoom == true)
         {
-            EnemySetting();
+            Instantiate(enemyBoss, transform.position, Quaternion.identity);
         }
         else
         {
-            enemyCount = 0;
+            if (room.rooms[posX, posY].order != 1 && room.rooms[posX, posY].specialRoom != true && room.rooms[posX, posY].bossRoom != true)
+            {
+                //EnemySetting();
+                enemyCount = 0;
+            }
+            else
+            {
+                enemyCount = 0;
+            }
         }
-
     }
 
     private void Update()

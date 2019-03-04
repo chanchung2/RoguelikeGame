@@ -17,7 +17,7 @@ public abstract class Enemy : MonoBehaviour
         player = GameObject.FindWithTag("Player");
     }
 
-    protected void DecreaseHP(int _damage)
+    public void DecreaseHP(float _damage)
     {
         hp -= _damage;
 

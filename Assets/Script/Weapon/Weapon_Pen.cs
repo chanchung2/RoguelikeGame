@@ -8,6 +8,8 @@ public class Weapon_Pen : MonoBehaviour
 
     private Rigidbody rigidody;
 
+    private float damage = 2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,5 +21,14 @@ public class Weapon_Pen : MonoBehaviour
     void Update()
     {
         rigidody.MovePosition(transform.position + transform.right * -1 * Speed * Time.smoothDeltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Enemy")
+        {
+            other.gameObject.GetComponent<Enemy_Book>().DecreaseHP(damage);
+            Destroy(gameObject);
+        }
     }
 }

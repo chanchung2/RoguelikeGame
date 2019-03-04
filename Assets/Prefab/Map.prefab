@@ -1427,6 +1427,7 @@ MonoBehaviour:
   - {fileID: 5653478216549756486}
   collider: {fileID: 0}
   enemy: {fileID: 5359125311547096337, guid: 3df3a1adc302bd249ab7b80b50a6f1b0, type: 3}
+  enemyBoss: {fileID: 157397561, guid: 58ab38de9fe3f9748964179a3794e79f, type: 3}
 --- !u!60 &8558085399494871804
 PolygonCollider2D:
   m_ObjectHideFlags: 0

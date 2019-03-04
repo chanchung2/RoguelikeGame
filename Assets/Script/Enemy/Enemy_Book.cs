@@ -38,7 +38,10 @@ public class Enemy_Book : Enemy
     {
         if (!isAttack)
         {
+
             isAttack = true;
+
+            yield return new WaitForSeconds(1.0f);
 
             Instantiate(attackWeapon, transform.position, Quaternion.Euler(0, 0, -Mathf.Atan2(player.GetComponent<Transform>().position.x - transform.position.x,
                                                                                              player.GetComponent<Transform>().position.y - transform.position.y) * Mathf.Rad2Deg + 90.0f));

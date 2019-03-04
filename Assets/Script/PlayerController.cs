@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float attackSpeed;
     [SerializeField]
-    public static float WeaponSpeed = 30; // 투사체 속도
+    public static float WeaponSpeed = 40; // 투사체 속도
 
     private float h;
     private float v;
