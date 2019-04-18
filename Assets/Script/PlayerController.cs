@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -41,6 +42,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private Item player_Weapon;
+
+    [SerializeField] private GameObject hitDamageText;
+    [SerializeField] private GameObject hitDamageTextParent;
 
     public RoomManager roomManager;
     private PlayerHeart playerHeart;
@@ -118,6 +122,17 @@ public class PlayerController : MonoBehaviour
             Debug.Log("플레이어 사망");
         }
         playerHeart.HeartReset();
+    }
+
+    public void weaponHit(Transform _enemyTransform, float _playerDamage)
+    {
+        Debug.Log(_enemyTransform.position);
+        Debug.Log(Camera.main.WorldToScreenPoint(_enemyTransform.position));
+        var clone = Instantiate(hitDamageText, Camera.main.WorldToScreenPoint(_enemyTransform.position), Quaternion.identity);
+        clone.GetComponent<Text>().text = _playerDamage.ToString();
+        clone.transform.parent = hitDamageTextParent.transform;
+
+        Destroy(clone, 0.5f);
     }
 
     IEnumerator AttackCoroutine(Transform pos, Quaternion qua)

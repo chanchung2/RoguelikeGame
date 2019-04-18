@@ -55,8 +55,7 @@ public class Map : MonoBehaviour
         {
             if (room.rooms[posX, posY].order != 1 && room.rooms[posX, posY].specialRoom != true && room.rooms[posX, posY].bossRoom != true)
             {
-                //EnemySetting();
-                enemyCount = 0;
+                EnemySetting();
             }
             else
             {

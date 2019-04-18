@@ -2,32 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon_Pen : MonoBehaviour
+public class Weapon_Pen : Weapon
 {
-    private float Speed;
-
     private Rigidbody rigidody;
-
-    private float damage = 2;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidody = GetComponent<Rigidbody>();
-        Speed = PlayerController.WeaponSpeed;
+        speed = PlayerController.WeaponSpeed;
+        damage = 2;
     }
 
     // Update is called once per frame
     void Update()
     {
-        rigidody.MovePosition(transform.position + transform.right * -1 * Speed * Time.smoothDeltaTime);
+        rigidody.MovePosition(transform.position + transform.right * -1 * speed * Time.smoothDeltaTime);
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Enemy")
         {
             other.gameObject.GetComponent<Enemy_Book>().DecreaseHP(damage);
+
+            GameObject.Find("Player").GetComponent<PlayerController>().weaponHit(other.transform, damage);
+
+            var cloneEffect = Instantiate(hitEffect, transform.position, Quaternion.Euler(0, 0, transform.eulerAngles.z));
+            Destroy(cloneEffect, 0.5f);
             Destroy(gameObject);
         }
     }

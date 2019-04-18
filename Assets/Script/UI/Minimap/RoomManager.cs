@@ -40,12 +40,6 @@ public class RoomManager : MonoBehaviour
         RoomCreate();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void RoomSetting()
     {
         rooms = new Room[roomXsize, roomYsize];
